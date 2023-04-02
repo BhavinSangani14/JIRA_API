@@ -23,6 +23,5 @@ requests-toolbelt==0.10.1
 resolvelib==0.8.1
 sh==1.14.3
 Shapely==1.8.5.post1
-sip==4.19.13
 validators==0.20.0
 virtualenv==20.17.1
