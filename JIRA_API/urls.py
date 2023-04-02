@@ -14,9 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from JIRA_CARD_DATA import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/jira/", include('card_data.urls')),
+    path("get_data/", views.get_data)
 ]

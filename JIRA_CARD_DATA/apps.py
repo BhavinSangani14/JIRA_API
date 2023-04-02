@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CardDataConfig(AppConfig):
+class JiraCardDataConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "card_data"
+    name = "JIRA_CARD_DATA"
