@@ -1,7 +1,5 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from .models import CredsModel, CardDataModel
-from .serializers import CardDataSerializer, CredsSerializer
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
@@ -15,9 +13,9 @@ from jira import JIRA
 # Create your views here.
 @api_view(["POST"])
 def get_data(request):
-    
     if request.method == "POST":
         data = request.data 
+        print(data)
         server = data.get("server", None)
         email = data.get("email", None)
         api_token = data.get("api_token", None)
@@ -25,16 +23,11 @@ def get_data(request):
         project = data.get("project", None)
         sprint = data.get("sprint", None)
         filters = {"project" : project, "sprint" : sprint}
-        print(filters)
-        serializer = CredsSerializer(data = creds)
-        print(creds)
-        if serializer.is_valid():
-            serializer.save()
-            card_data_dic = fetch_data(creds, filters=filters)
-            json_res = json.dumps(card_data_dic)
-            print(card_data_dic)
-            return HttpResponse(json_res)
-        
+        card_data_dic = fetch_data(creds, filters=filters)
+        json_res = json.dumps(card_data_dic)
+        print(card_data_dic)
+        return HttpResponse(json_res)
+    
         
         # if email is not None and api_token is not None:
         #     card_data = CredsModel.objects.get(id = id)
@@ -47,7 +40,7 @@ def get_data(request):
         #     return HttpResponse(json_data)
             
             
-test = {"server" : "https://bhavin-sangani.atlassian.net", "email" : "100bhavinsangani@gmail.com", "api_token" : "l5LzOfZVEUleEIbFmhyzBD91", "project" : "Data Automation", "sprint" : "DA Sprint 1"}
+# test = {"server" : "https://bhavin-sangani.atlassian.net", "email" : "100bhavinsangani@gmail.com", "api_token" : "ATATT3xFfGF0e96g8_XM84jCNf0XClY0D6f4-mq5cX7199h4ndX5-1U7pMZtQnsGubv_zU4YZCxgN8xHirfi6enBUcjlxtKKNvVntaUiU7BT4KMSzsvTU_JTiXbArxIT7MdP77iZxLyHqOFQRsQM5OJbH3ekh2RG-qLo4frZQgFq9Ni5KKU81ZU=2D44418E", "project" : "Data Automation", "sprint" : "DA Sprint 1"}
             
 def fetch_data(cred, filters = {}):
     
