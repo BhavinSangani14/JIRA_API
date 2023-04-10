@@ -1,13 +1,8 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from django.http import HttpResponse
-from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer
-import io
-from rest_framework.parsers import JSONParser
 import json
 from django.views.decorators.csrf import csrf_exempt
-import random
 from jira import JIRA
 
 # Create your views here.
@@ -27,20 +22,9 @@ def get_data(request):
         json_res = json.dumps(card_data_dic)
         print(card_data_dic)
         return HttpResponse(json_res)
-    
-        
-        # if email is not None and api_token is not None:
-        #     card_data = CredsModel.objects.get(id = id)
-        #     serializer = CardDataSerializer(card_data)
-        #     json_data = JSONRenderer().render(serializer.data)
-        #     return HttpResponse(json_data)
-        # else:
-        #     json_data = {"message" : "ID is not valid"}
-        #     json_data = json.dumps(json_data)
-        #     return HttpResponse(json_data)
             
             
-# test = {"server" : "https://bhavin-sangani.atlassian.net", "email" : "100bhavinsangani@gmail.com", "api_token" : "ATATT3xFfGF05W3FJFDNKWBW8mKpcrR3PJbMWSgOzRfnBWVfv4CylOR9D8Np6ztldLqCV0XO7fKKK73rODiDEtTjcHUTmeDieubemaTS2OtM11jryvcHyoyzGTvhPYSYbTth8vO66Ez-DB4VAOTJjhHbPuatxtfSvXPRN599OAPNFF3d3fN3rR4=1D550507", "project" : "Data Automation", "sprint" : "DA Sprint 1"}
+# test = {"server" : "https://bhavin-sangani.atlassian.net", "email" : "100bhavinsangani@gmail.com", "api_token" : "ATATT3xFfGF0RIO9eXHFBzJHoPFVsFpEYcie7MSJwiSlvjsQRNO5EsOvJiL3WWQnHXV6Yb0bSbN0V_b0BEdhy7b4BBjH1UtPkyEyqiqvs-y_pHRmqBi8MdcH90jB8uTQcovNnZDHcV7HlYv7Jc_TI6h0zYt2E7LuVmeS-U699y87aBiHgC3ciM8=757265A8", "project" : "Data Automation", "sprint" : "DA Sprint 1"}
             
 def fetch_data(cred, filters = {}):
     
@@ -50,11 +34,6 @@ def fetch_data(cred, filters = {}):
     
     jiraOptions = {'server': server}
 
-    # Get a JIRA client instance, pass,
-    # Authentication parameters
-    # and the Server name.
-    # emailID = your emailID
-    # token = token you receive after registration
     jira = JIRA(options=jiraOptions, basic_auth=(
     email_id, auth_token))
     
@@ -63,11 +42,10 @@ def fetch_data(cred, filters = {}):
     for field in fields:
         fields_dic[field['name']] = field['id']
     # print(fields_dic)
-
     
     
     # Search all issues mentioned against a project name.
-    issue_dic = {"Issue_Type":[], "Project":[],"Time_Spent":[],"Status":[], "Story_Points":[], "Last_Viewed":[], "Sprint":[], "Priority":[],
+    issue_dic = {"Issue_Type":[], "Project":[],"Status":[], "Story_Points":[], "Sprint":[], "Priority":[],
              "Assignee":[], "Issue_Key":[], "Description":[], "Summary":[], "Reporter":[]}
     
     jql_str = ""
@@ -94,8 +72,6 @@ def fetch_data(cred, filters = {}):
     if valid == False:
         return {"msg" : "Invalid Information Passed."}
     for singleIssue in jira.search_issues(jql_str=jql_str):
-	# print(singleIssue.fields.
-        # print(getattr(singleIssue.fields, fields_dic["Story Points"]))
         try:
             Issue_Type = getattr(singleIssue.fields, fields_dic["Issue Type"]).name
         except:
@@ -104,10 +80,10 @@ def fetch_data(cred, filters = {}):
             Project = getattr(singleIssue.fields, fields_dic["Project"]).name
         except:
             Project = None
-        try:
-            Time_Spent = getattr(singleIssue.fields, fields_dic["Time Spent"])
-        except:
-            Time_Spent = 0
+        # try:
+        #     Time_Spent = getattr(singleIssue.fields, fields_dic["Time Spent"])
+        # except:
+        #     Time_Spent = 0
         try:
             Status = getattr(singleIssue.fields, fields_dic["Status"]).name
         except:
@@ -116,10 +92,10 @@ def fetch_data(cred, filters = {}):
             Story_Points = getattr(singleIssue.fields, fields_dic["Story Points"])
         except:
             Story_Points = 0
-        try:
-            Last_Viewed = getattr(singleIssue.fields, fields_dic["Last Viewed"])
-        except:
-            Last_Viewed = None
+        # try:
+        #     Last_Viewed = getattr(singleIssue.fields, fields_dic["Last Viewed"])
+        # except:
+        #     Last_Viewed = None
         try:
             Sprint = getattr(singleIssue.fields, fields_dic["Sprint"])[0].name
         except:
@@ -161,8 +137,6 @@ def fetch_data(cred, filters = {}):
         issue_dic["Summary"].append(Summary)
         issue_dic["Reporter"].append(Reporter)
         issue_dic["Issue_Key"].append(Issue_Key)
-        
-    # issue_df = pd.DataFrame(issue_dic)
 
     return issue_dic
     
