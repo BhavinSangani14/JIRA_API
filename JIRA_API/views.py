@@ -1,12 +1,14 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, throttle_classes
 from django.http import HttpResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.throttling import UserRateThrottle
 from jira import JIRA
 
 # Create your views here.
 @api_view(["POST"])
+@throttle_classes([UserRateThrottle])
 def get_data(request):
     if request.method == "POST":
         data = request.data 
