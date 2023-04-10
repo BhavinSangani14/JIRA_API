@@ -1,4 +1,4 @@
-aiohttp==3.8.1
+# aiohttp==3.8.1
 anaconda-navigator==2.1.4
 anaconda-project==0.10.2
 ansible==6.5.0
