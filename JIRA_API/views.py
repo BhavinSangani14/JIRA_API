@@ -40,7 +40,7 @@ def get_data(request):
         #     return HttpResponse(json_data)
             
             
-# test = {"server" : "https://bhavin-sangani.atlassian.net", "email" : "100bhavinsangani@gmail.com", "api_token" : "ATATT3xFfGF0e96g8_XM84jCNf0XClY0D6f4-mq5cX7199h4ndX5-1U7pMZtQnsGubv_zU4YZCxgN8xHirfi6enBUcjlxtKKNvVntaUiU7BT4KMSzsvTU_JTiXbArxIT7MdP77iZxLyHqOFQRsQM5OJbH3ekh2RG-qLo4frZQgFq9Ni5KKU81ZU=2D44418E", "project" : "Data Automation", "sprint" : "DA Sprint 1"}
+# test = {"server" : "https://bhavin-sangani.atlassian.net", "email" : "100bhavinsangani@gmail.com", "api_token" : "ATATT3xFfGF05W3FJFDNKWBW8mKpcrR3PJbMWSgOzRfnBWVfv4CylOR9D8Np6ztldLqCV0XO7fKKK73rODiDEtTjcHUTmeDieubemaTS2OtM11jryvcHyoyzGTvhPYSYbTth8vO66Ez-DB4VAOTJjhHbPuatxtfSvXPRN599OAPNFF3d3fN3rR4=1D550507", "project" : "Data Automation", "sprint" : "DA Sprint 1"}
             
 def fetch_data(cred, filters = {}):
     
@@ -71,12 +71,17 @@ def fetch_data(cred, filters = {}):
              "Assignee":[], "Issue_Key":[], "Description":[], "Summary":[], "Reporter":[]}
     
     jql_str = ""
+    jql_str_list = []
     for i, filter in enumerate(filters.items()):
-        if i == 0 and filter[1] != None:
-            jql_str += f"\'{filter[0]}\'= \'{filter[1]}\'"
-        elif filter[1] != None:
-            jql_str += f" and \'{filter[0]}\'= \'{filter[1]}\'"
-
+        if filter[1] != None:
+            jql_str_list.append(f"\'{filter[0]}\'= \'{filter[1]}\'")
+    l = len(jql_str_list)
+    if l == 1:
+        jql_str = jql_str_list[0]
+    if l > 1:
+        jql_str = jql_str_list[0]
+        for fltr in jql_str_list[1:]:
+            jql_str += " and " + fltr 
     print(jql_str)
     
     valid = True
